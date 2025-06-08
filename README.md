@@ -13,7 +13,7 @@ A simple Python SDK for Chainlink CCIP (Cross-Chain Interoperability Protocol) t
 ## Installation
 
 ```bash
-pip install ccip-sdk
+pip install ccip-sdk (coming soon, WIP)
 ```
 
 ## Quick Start
@@ -186,6 +186,183 @@ pytest tests/
 - Add inline code documentation
 - Provide usage examples
 
+## MCP Server Support
+
+The CCIP SDK includes a **Model Context Protocol (MCP) server** that enables AI assistants like Claude Desktop to perform cross-chain transfers using natural language.
+
+### 🚀 Quick MCP Setup
+
+1. **Install MCP Dependencies**
+```bash
+pip install mcp ccip-sdk python-dotenv
+```
+
+2. **Download MCP Server**
+```bash
+# Save the MCP server file as ccip_mcp_server.py
+curl -o ccip_mcp_server.py https://raw.githubusercontent.com/your-username/ccip_sdk/main/mcp/ccip_mcp_server.py
+```
+
+3. **Setup Environment**
+```bash
+# Create .env file with your private key
+echo "PRIVATE_KEY=your_private_key_here" > .env
+```
+
+### 🖥️ Claude Desktop Integration
+
+#### Step 1: Configure Claude Desktop
+
+Add the MCP server to your Claude Desktop configuration:
+
+**On macOS:** `~/Library/Application Support/Claude/claude_desktop_config.json`
+**On Windows:** `%APPDATA%/Claude/claude_desktop_config.json`
+
+```json
+{
+  "mcpServers": {
+    "ccip": {
+      "command": "python",
+      "args": ["/path/to/your/ccip_mcp_server.py"],
+      "env": {
+        "PRIVATE_KEY": "your_private_key_here"
+      }
+    }
+  }
+}
+```
+
+#### Step 2: Restart Claude Desktop
+
+Close and reopen Claude Desktop to load the MCP server.
+
+#### Step 3: Start Using Cross-Chain Transfers!
+
+Now you can chat with Claude using natural language:
+
+```
+👤 You: "Send 0.1 CCIP-BnM from Ethereum to Arbitrum with message 'Hello Cross-Chain!'"
+
+🤖 Claude: I'll help you execute a cross-chain transfer from Ethereum to Arbitrum. Let me set this up...
+
+✅ Transfer setup complete!
+🔄 Executing all 8 steps...
+...
+🎉 Transfer complete! Track here: https://ccip.chain.link/...
+```
+
+### 🛠️ Advanced MCP Configuration
+
+#### Environment Variables Setup
+```bash
+# Create a dedicated .env file for MCP
+cat > ccip_mcp.env << EOF
+PRIVATE_KEY=your_private_key_here
+ETHEREUM_RPC=https://eth-sepolia.api.onfinality.io/public
+ARBITRUM_RPC=https://arbitrum-sepolia-rpc.publicnode.com
+BASE_RPC=https://sepolia.base.org
+AVALANCHE_RPC=https://ava-testnet.public.blastapi.io/ext/bc/C/rpc
+EOF
+```
+
+#### Claude Desktop Config with Environment File
+```json
+{
+  "mcpServers": {
+    "ccip": {
+      "command": "python",
+      "args": ["/path/to/ccip_mcp_server.py"],
+      "env": {
+        "PRIVATE_KEY": "your_private_key_here"
+      }
+    }
+  }
+}
+```
+
+### 🎯 MCP Usage Examples
+
+#### Simple Transfer
+```
+Send 0.05 CCIP-BnM from Ethereum to Base
+```
+
+#### Advanced Transfer
+```
+Execute a cross-chain transfer of 0.1 USDC from Arbitrum to Avalanche with message "Payment for services" and fund the contract with 0.2 tokens and 0.08 ETH
+```
+
+#### Check Status
+```
+What's the status of my current CCIP transfer?
+```
+
+#### Find Chains
+```
+What chain matches "arb"?
+```
+
+### 🔧 Troubleshooting MCP
+
+#### Common Issues
+
+**MCP Server Not Loading:**
+- Check file paths in `claude_desktop_config.json`
+- Verify Python and dependencies are installed
+- Check Claude Desktop logs
+
+**Transfer Failures:**
+- Ensure private key has testnet funds
+- Verify network connectivity
+- Check supported chain/token names
+
+**Permission Issues:**
+- Ensure Python script is executable: `chmod +x ccip_mcp_server.py`
+- Check file ownership and permissions
+
+#### Debug Mode
+Add debug logging to your MCP server:
+```json
+{
+  "mcpServers": {
+    "ccip": {
+      "command": "python",
+      "args": ["/path/to/mcp-server.py", "--debug"],
+      "env": {
+        "PRIVATE_KEY": "your_private_key_here",
+        "LOG_LEVEL": "DEBUG"
+      }
+    }
+  }
+}
+```
+
+### 🌟 MCP Features
+
+- ✅ **Natural Language Processing** - Use everyday language for chain names
+- ✅ **One-Step Execution** - Complete transfers in a single command
+- ✅ **Real-time Progress** - Live updates during transfer process
+- ✅ **Error Recovery** - Clear error messages and troubleshooting
+- ✅ **State Management** - Maintains transfer context across conversations
+- ✅ **Multi-Chain Support** - All testnets supported with automatic mapping
+
+### 📱 Alternative MCP Clients
+
+Besides Claude Desktop, you can use the MCP server with:
+
+- **Custom Applications**: Build your own MCP client
+- **Other AI Assistants**: Any MCP-compatible AI system
+- **Command Line**: Direct MCP protocol communication
+- **Web Interfaces**: Browser-based MCP clients
+
+### 🔐 Security Best Practices
+
+- ⚠️ **Never commit private keys** to version control
+- 🔒 Use **environment variables** for sensitive data
+- 🧪 **Test on testnets** before mainnet
+- 🔄 **Rotate keys** regularly
+- 📝 **Monitor transactions** via block explorers
+
 ## License
 
 MIT License - see [LICENSE](LICENSE) for details.
@@ -194,3 +371,4 @@ MIT License - see [LICENSE](LICENSE) for details.
 
 - 📖 [Documentation](https://github.com/dhananjaypai08/ccip_sdk/docs) [Coming soon]
 - 🐛 [Issue Tracker](https://github.com/dhananjaypai08/ccip_sdk/issues)
+- 🤖 [MCP Server](https://github.com/dhananjaypai08/ccip_sdk/mcp-server.py)
