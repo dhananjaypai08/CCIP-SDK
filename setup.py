@@ -26,7 +26,7 @@ setup(
         "ccip_sdk": [
             "ccip_directory/*.json",
             "ccip_directory/**/*.json",
-            "contracts/artifacts/contracts/CCIPContract.sol/*.json",
+            "contracts/artifacts/contracts/CCIPContract/*.json",
         ],
     },
     install_requires=[

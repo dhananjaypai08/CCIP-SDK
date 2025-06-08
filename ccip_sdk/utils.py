@@ -36,7 +36,7 @@ def get_contract_interface(file_path: str) -> dict:
     """
     
     with importlib.resources.open_text(
-        "ccip_sdk.contracts.artifacts.contracts.CCIPContract_sol", 
+        "ccip_sdk.contracts.artifacts.contracts.CCIPContract", 
         "CCIPContract.json"
     ) as f:
         return json.load(f)
