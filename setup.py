@@ -1,0 +1,27 @@
+from setuptools import setup, find_packages
+
+setup(
+    name="ccip-sdk",
+    version="0.1.0",
+    description="A Python SDK for Chainlink CCIP cross-chain messaging and token transfers",
+    long_description=open("README.md").read(),
+    long_description_content_type="text/markdown",
+    author="Dhananjay Pai",
+    author_email="dhananjay2002pai@gmail.com",
+    url="https://github.com/dhananjaypai08/ccip-sdk",
+    license="MIT",
+    packages=find_packages(include=["ccip_sdk", "ccip_sdk.*"]),
+    install_requires=[
+        "web3",
+        "eth_account",
+        "requests",
+    ],
+    classifiers=[
+        "Programming Language :: Python :: 3",
+        "License :: OSI Approved :: MIT License",
+        "Development Status :: 3 - Alpha",
+        "Intended Audience :: Developers",
+        "Operating System :: OS Independent",
+    ],
+    python_requires=">=3.8",
+)
