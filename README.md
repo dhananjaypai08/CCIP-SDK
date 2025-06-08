@@ -159,7 +159,7 @@ We welcome contributions! Here's how you can help:
 
 ### Development Setup
 ```bash
-git clone https://github.com/your-username/ccip_sdk.git
+git clone https://github.com/dhananjaypai08/ccip_sdk.git
 cd ccip_sdk
 pip install -e .
 pip install -r requirements-dev.txt
@@ -200,7 +200,7 @@ pip install mcp ccip-sdk python-dotenv
 2. **Download MCP Server**
 ```bash
 # Save the MCP server file as ccip_mcp_server.py
-curl -o ccip_mcp_server.py https://raw.githubusercontent.com/your-username/ccip_sdk/main/mcp/ccip_mcp_server.py
+curl -o ccip_mcp_server.py https://raw.githubusercontent.com/dhananjaypai08/ccip_sdk/main/mcp/ccip_mcp_server.py
 ```
 
 3. **Setup Environment**
