@@ -13,7 +13,7 @@ A simple Python SDK for Chainlink CCIP (Cross-Chain Interoperability Protocol) t
 ## Installation
 
 ```bash
-pip install ccip-sdk (coming soon, WIP)
+pip install ccip-sdk
 ```
 
 ## Quick Start

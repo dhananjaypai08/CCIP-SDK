@@ -1,6 +1,7 @@
 import json
 from eth_account import Account
 from web3 import Web3
+import importlib.resources
 
 multiplier = 2
 
@@ -34,8 +35,11 @@ def get_contract_interface(file_path: str) -> dict:
     :return: The ABI as a dictionary.
     """
     
-    with open(file_path, 'r') as file:
-        return json.load(file)
+    with importlib.resources.open_text(
+        "ccip_sdk.contracts.artifacts.contracts.CCIPContract_sol", 
+        "CCIPContract.json"
+    ) as f:
+        return json.load(f)
     
 def get_ccip_directory_data(file_path: str) -> dict:
     """
@@ -44,8 +48,8 @@ def get_ccip_directory_data(file_path: str) -> dict:
     :param file_path: The path to the JSON file containing the CCIP directory data.
     :return: The CCIP directory data as a dictionary.
     """
-    with open(file_path, 'r') as file:
-        return json.load(file)
+    with importlib.resources.open_text("ccip_sdk.ccip_directory", "data.json") as f:
+        return json.load(f)
     
 def deploy_contract(rpc: str, router: str, link: str, filepath: str, account: Account, multiplier=multiplier):
     """

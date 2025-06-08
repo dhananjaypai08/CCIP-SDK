@@ -12,7 +12,7 @@ except FileNotFoundError:
 
 setup(
     name="ccip-sdk",
-    version="0.1.11",
+    version="0.1.121",
     description="The simplest Python SDK for Chainlink CCIP that turns complex cross-chain operations into 15 lines of code.",
     long_description=long_description,
     long_description_content_type="text/markdown",
@@ -23,7 +23,11 @@ setup(
     packages=find_packages(include=["ccip_sdk", "ccip_sdk.*"]),
     include_package_data=True,
     package_data={
-        "ccip_sdk": ["ccip_directory/*.json", "contracts/artifacts/*.*"],
+        "ccip_sdk": [
+            "ccip_directory/*.json",
+            "ccip_directory/**/*.json",
+            "contracts/artifacts/contracts/CCIPContract.sol/*.json",
+        ],
     },
     install_requires=[
         "web3",
