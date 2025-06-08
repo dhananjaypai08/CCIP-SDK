@@ -286,3 +286,81 @@ def transfer(rpc: str, current_contract: str, destination_chain_selector: int, r
     except Exception as e:
         print(f"Error allowing destination chain: {str(e)}")
         return False
+    
+def getLastReceivedMessage(rpc: str, contract: str, filepath: str):
+    w3 = Web3(Web3.HTTPProvider(rpc))
+    contract_interface = get_contract_interface(filepath)
+    abi = contract_interface["abi"]
+    contract = w3.eth.contract(address=contract, abi=abi)
+    
+    try:
+        last_message = contract.functions.getLastReceivedMessage().call()
+        print(f"Last received message: {last_message}")
+        return last_message
+    except Exception as e:
+        print(f"Error getting last received message: {str(e)}")
+        return None
+
+def withdraw_token(rpc: str, contract: str, token: str, beneficiary: str, account: Account, filepath: str, multiplier=multiplier):
+    w3 = Web3(Web3.HTTPProvider(rpc))
+    nonce = max(
+        w3.eth.get_transaction_count(account.address, 'pending'),
+        w3.eth.get_transaction_count(account.address, 'latest')
+    )
+    contract_interface = get_contract_interface(filepath)
+    abi = contract_interface["abi"]
+    contract = w3.eth.contract(address=contract, abi=abi)
+
+    token = Web3.to_checksum_address(token)
+    beneficiary = Web3.to_checksum_address(beneficiary)
+    gas_estimate = contract.functions.withdrawToken(token, beneficiary).estimate_gas({"from": account.address})
+
+    transaction = {
+        'nonce': nonce,
+        'gas': int(gas_estimate * multiplier),
+        'gasPrice': w3.eth.gas_price,
+        'from': account.address,
+    }
+
+    try:
+        tx = contract.functions.withdrawToken(token, beneficiary).build_transaction(transaction)
+        signed_tx = w3.eth.account.sign_transaction(tx, account.key.hex())
+        tx_hash = w3.eth.send_raw_transaction(signed_tx.raw_transaction)    
+        tx_receipt = w3.eth.wait_for_transaction_receipt(tx_hash)
+        print(f"Transaction hash: 0x{tx_hash.hex()}")
+        return f"0x{tx_hash.hex()}"
+    except Exception as e:
+        print(f"Error withdrawing token: {str(e)}")
+        return False
+    
+def withdraw_eth(rpc: str, contract: str, beneficiary: str, account: Account, filepath: str, multiplier=multiplier):
+    w3 = Web3(Web3.HTTPProvider(rpc))
+    nonce = max(
+        w3.eth.get_transaction_count(account.address, 'pending'),
+        w3.eth.get_transaction_count(account.address, 'latest')
+    )
+    contract_interface = get_contract_interface(filepath)
+    abi = contract_interface["abi"]
+    contract = w3.eth.contract(address=contract, abi=abi)
+
+    token = Web3.to_checksum_address(token)
+    beneficiary = Web3.to_checksum_address(beneficiary)
+    gas_estimate = contract.functions.withdraw(beneficiary).estimate_gas({"from": account.address})
+
+    transaction = {
+        'nonce': nonce,
+        'gas': int(gas_estimate * multiplier),
+        'gasPrice': w3.eth.gas_price,
+        'from': account.address,
+    }
+
+    try:
+        tx = contract.functions.withdraw(beneficiary).build_transaction(transaction)
+        signed_tx = w3.eth.account.sign_transaction(tx, account.key.hex())
+        tx_hash = w3.eth.send_raw_transaction(signed_tx.raw_transaction)    
+        tx_receipt = w3.eth.wait_for_transaction_receipt(tx_hash)
+        print(f"Transaction hash: 0x{tx_hash.hex()}")
+        return f"0x{tx_hash.hex()}"
+    except Exception as e:
+        print(f"Error withdrawing token: {str(e)}")
+        return False

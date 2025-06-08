@@ -8,7 +8,10 @@ from .utils import (
     allowlistDestinationChain,
     allowlistSourceChain,
     allowlistSender,
-    transfer
+    transfer,
+    getLastReceivedMessage,
+    withdraw_token,
+    withdraw_eth
 )
 from pathlib import Path
 import time
@@ -188,7 +191,54 @@ class CCIPClient:
         print(f"CCIP Transfer from chain {sender_chain} to destination chain {receiver_chain}")
         txn_hash = transfer(rpc, sender_contract, destination_chain_selector, receiver_contract, text, token_address, amount, self.account, self.contract_compiled_file)
         return f"https://ccip.chain.link/tx/{txn_hash}"
-
+    
+    def get_message_on_reciever_contract(self, receiver_chain: str, contract = None) -> str:
+        """
+        Function to get the message on the receiver contract
+        :param receiver_chain: The chain on which the receiver contract is deployed
+        :param[Optional] contract : contract address on the receiver network
+        """
+        if receiver_chain not in self.receiver_contracts:
+            raise ValueError(f"Receiver contract not deployed on {receiver_chain}")
+        
+        rpc = self.chains_data[receiver_chain]["rpc"]
+        if contract is None:
+            contract_address = self.receiver_contracts[receiver_chain]
+        
+        print(f"Getting last received message on receiver contract on chain : {receiver_chain}")
+        message = getLastReceivedMessage(rpc, contract_address, self.contract_compiled_file)
+        return message
+    
+    def withdraw_token_to_wallet(self, chain: str, token: str, beneficiary: str) -> str:
+        """
+        :param chain: The chain on which the contract is deployed
+        :param beneficiary: The address to which the tokens will be withdrawn
+        """
+        if chain not in self.chains:
+            raise ValueError(f"Sender contract not deployed on {chain}")
+        
+        rpc = self.chains_data[chain]["rpc"]
+        contract_address = self.receiver_contracts[chain]
+        token_address = self.chains_data[chain]["tokens"][token]
+        
+        print(f"Withdrawing tokens to wallet on chain : {chain}")
+        txn_hash = withdraw_token(rpc, contract_address, token_address, beneficiary, self.account, self.contract_compiled_file)
+        return txn_hash
+    
+    def withdraw_eth_to_wallet(self, chain: str, beneficiary: str) -> str:
+        """
+        :param chain: The chain on which the contract is deployed
+        :param beneficiary: The address to which the ETH will be withdrawn
+        """
+        if chain not in self.chains:
+            raise ValueError(f"Sender contract not deployed on {chain}")
+        
+        rpc = self.chains_data[chain]["rpc"]
+        contract_address = self.receiver_contracts[chain]
+        
+        print(f"Withdrawing ETH to wallet on chain : {chain}")
+        txn_hash = withdraw_eth(rpc, contract_address, beneficiary, self.account, self.contract_compiled_file)
+        return txn_hash
 
     def validate_chain(self, chain: str):
         """
