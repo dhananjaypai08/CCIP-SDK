@@ -12,7 +12,7 @@ except FileNotFoundError:
 
 setup(
     name="ccip-sdk",
-    version="0.1.123",
+    version="0.1.124",
     description="The simplest Python SDK for Chainlink CCIP that turns complex cross-chain operations into 15 lines of code.",
     long_description=long_description,
     long_description_content_type="text/markdown",
