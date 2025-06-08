@@ -40,6 +40,7 @@ class CCIPClient:
         CONTRACT_FILE = SCRIPT_DIR / "contracts" / "artifacts" / "contracts" / "CCIPContract.sol" / "CCIPContract.json"
         self.contract_compiled_file = str(CONTRACT_FILE)
         self.ccip_directory_path = str(DATA_FILE)
+        print("setting up ccip client...")
         self.chains_data = get_ccip_directory_data(self.ccip_directory_path)
         self.chains = list(self.chains_data.keys())
         self.tokens = list(self.chains_data["ethereum_sepolia"]["tokens"].keys())
