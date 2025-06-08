@@ -32,15 +32,11 @@ class CCIPClient:
         self.account = get_account_from_private_key(private_key)
         self.sender_contracts = {}
         self.receiver_contracts = {}
-        CONTRACT_PATH = (
-            Path(__file__)                            # /project-root/src/ccip_sdk/client.py
-            .resolve()                                # absolute path
-            .parent                                   # /project-root/src/ccip_sdk/
-            .parent                                   # /project-root/src/
-            .parent / "contracts" / "artifacts" / "contracts" / "CCIPContract.sol" / "CCIPContract.json"
-        )
-        self.contract_compiled_file = "./contracts/artifacts/contracts/CCIPContract.sol/CCIPContract.json"
-        self.ccip_directory_path = "./ccip_directory/data.json"
+        SCRIPT_DIR = Path(__file__).parent.absolute()
+        DATA_FILE = SCRIPT_DIR / "ccip_directory" / "data.json"
+        CONTRACT_FILE = SCRIPT_DIR / "contracts" / "artifacts" / "contracts" / "CCIPContract.sol" / "CCIPContract.json"
+        self.contract_compiled_file = str(CONTRACT_FILE)
+        self.ccip_directory_path = str(DATA_FILE)
         self.chains_data = get_ccip_directory_data(self.ccip_directory_path)
         self.chains = list(self.chains_data.keys())
         self.tokens = list(self.chains_data["ethereum_sepolia"]["tokens"].keys())
