@@ -1,10 +1,20 @@
 from setuptools import setup, find_packages
+from pathlib import Path
+
+this_directory = Path(__file__).parent
+readme_path = this_directory / "README.md"
+
+# Read README with encoding and fallback
+try:
+    long_description = readme_path.read_text(encoding="utf-8")
+except FileNotFoundError:
+    long_description = ""
 
 setup(
     name="ccip-sdk",
-    version="0.1.0",
-    description="A Python SDK for Chainlink CCIP cross-chain messaging and token transfers",
-    long_description=open("README.md").read(),
+    version="0.1.1",
+    description="The simplest Python SDK for Chainlink CCIP that turns complex cross-chain operations into 15 lines of code.",
+    long_description=long_description,
     long_description_content_type="text/markdown",
     author="Dhananjay Pai",
     author_email="dhananjay2002pai@gmail.com",
