@@ -4,16 +4,23 @@ A simple Python SDK for Chainlink CCIP (Cross-Chain Interoperability Protocol) t
 
 ## Features
 
-- 🚀 Deploy sender and receiver contracts across multiple testnets
-- 💰 Send tokens and ETH to contracts
-- 🔗 Configure cross-chain permissions
-- ⚡ Execute cross-chain transfers with built-in monitoring
-- 📊 Transaction tracking and URL generation
+- Deploy sender and receiver contracts across multiple testnets
+- Send tokens and ETH to contracts from your wallet
+- Configure cross-chain permissions
+- Transaction tracking on CCIP Explorer
 
 ## Installation
 
+1. Direct
 ```bash
 pip install ccip-sdk
+```
+
+2. via `virtual environment`
+```bash
+python -m venv env
+source env/bin/activate
+pip install ccip-sdk python-dotenv
 ```
 
 ## Quick Start
@@ -25,36 +32,7 @@ Create a `.env` file in your project root:
 ```env
 PRIVATE_KEY=your_private_key_here
 ```
-
-### 2. Basic Usage
-
-```python
-from ccip_sdk import CCIPClient
-from dotenv import load_dotenv
-import os
-
-load_dotenv()
-
-# Initialize client
-client = CCIPClient(private_key=os.environ.get("PRIVATE_KEY"))
-
-# Deploy contracts and perform cross-chain transfer
-contract = client.deploy_sender_contract("ethereum_sepolia")
-print(f"Deployed contract address: {contract}")
-
-# Fund the contract
-txn_hash = client.send_tokens_to_sender_contract("ethereum_sepolia", "CCIP-BnM", 0.1)
-print(f"Tokens sent: {txn_hash}")
-
-# Transfer across chains
-txn_url = client.transfer(
-    sender_chain="ethereum_sepolia", 
-    receiver_chain="arbitrum_sepolia", 
-    text="Hello Cross-Chain!", 
-    amount=0.069
-)
-print(f"Track transfer: {txn_url}")
-```
+**Note: Make sure your account has ETH, CCIP-BnM(or any other token) to pay for gas and transfer tokens**
 
 ## Complete Example
 
@@ -96,7 +74,7 @@ txn_hash = client.allow_sender_on_receiver(sender_chain="ethereum_sepolia", rece
 print(f"Allowed the sender contract to send messages on reciever chain with txnHash : {txn_hash}\n")
 
 # Step 8: Execute cross-chain transfer
-txn_url = client.transfer(sender_chain="ethereum_sepolia", receiver_chain="arbitrum_sepolia", text="Hi dj boi", amount=0.069)
+txn_url = client.transfer(sender_chain="ethereum_sepolia", receiver_chain="arbitrum_sepolia", text="Hi dj boi", amount=0.069, token="CCIP-BnM")
 print(f"You can watch the CCIP Transfer here : {txn_url}\n")
 ```
 
@@ -118,6 +96,10 @@ print(f"You can watch the CCIP Transfer here : {txn_url}\n")
 ### 4. **Cross-Chain Transfer**
 - `transfer()`: Executes the cross-chain token transfer with optional message
 
+### 5. **Withdraw tokens**
+- `withdraw_token_to_wallet()`: Withdraws the given token to beneficiary
+
+
 ## Supported Networks
 
 | Chain Name | Network | Purpose |
@@ -138,7 +120,7 @@ print(f"You can watch the CCIP Transfer here : {txn_url}\n")
 
 ## Requirements
 
-- Python 3.7+
+- Python 3.8+
 - Valid private key with testnet funds
 - Access to supported testnet RPCs
 
@@ -165,17 +147,6 @@ pip install -e .
 pip install -r requirements-dev.txt
 ```
 
-### Running Tests
-```bash
-pytest tests/
-```
-
-### Code Style
-- Follow PEP 8 guidelines
-- Use type hints where applicable
-- Add docstrings for public methods
-- Ensure 80% test coverage
-
 ### Issues and Feature Requests
 - Check existing issues before creating new ones
 - Provide detailed descriptions and reproduction steps
@@ -200,7 +171,7 @@ pip install mcp ccip-sdk python-dotenv
 2. **Download MCP Server**
 ```bash
 # Save the MCP server file as ccip_mcp_server.py
-curl -o ccip_mcp_server.py https://raw.githubusercontent.com/dhananjaypai08/ccip_sdk/main/mcp/ccip_mcp_server.py
+curl -o ccip_mcp_server.py https://raw.githubusercontent.com/dhananjaypai08/CCIP-SDK/blob/master/mcp-server.py
 ```
 
 3. **Setup Environment**
@@ -248,7 +219,7 @@ Now you can chat with Claude using natural language:
 ✅ Transfer setup complete!
 🔄 Executing all 8 steps...
 ...
-🎉 Transfer complete! Track here: https://ccip.chain.link/...
+🎉 Transfer complete! Track here: https://ccip.chain.link/tx/...
 ```
 
 ### 🛠️ Advanced MCP Configuration
@@ -258,10 +229,6 @@ Now you can chat with Claude using natural language:
 # Create a dedicated .env file for MCP
 cat > ccip_mcp.env << EOF
 PRIVATE_KEY=your_private_key_here
-ETHEREUM_RPC=https://eth-sepolia.api.onfinality.io/public
-ARBITRUM_RPC=https://arbitrum-sepolia-rpc.publicnode.com
-BASE_RPC=https://sepolia.base.org
-AVALANCHE_RPC=https://ava-testnet.public.blastapi.io/ext/bc/C/rpc
 EOF
 ```
 
