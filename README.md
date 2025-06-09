@@ -369,6 +369,6 @@ MIT License - see [LICENSE](LICENSE) for details.
 
 ## Support
 
-- 📖 [Documentation](https://github.com/dhananjaypai08/ccip_sdk/docs) [Coming soon]
-- 🐛 [Issue Tracker](https://github.com/dhananjaypai08/ccip_sdk/issues)
-- 🤖 [MCP Server](https://github.com/dhananjaypai08/ccip_sdk/mcp-server.py)
+- 🐛 [Issue Tracker](https://github.com/dhananjaypai08/CCIP-SDK/issues)
+- 🤖 [MCP Server](https://github.com/dhananjaypai08/CCIP-SDK/blob/master/mcp-server.py)
+- 📖 [Documentation](https://github.com/dhananjaypai08/CCIP-SDK/docs) [Coming soon]
