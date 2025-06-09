@@ -37,7 +37,7 @@ class CCIPClient:
         self.receiver_contracts = {}
         SCRIPT_DIR = Path(__file__).parent.absolute()
         DATA_FILE = SCRIPT_DIR / "ccip_directory" / "data.json"
-        CONTRACT_FILE = SCRIPT_DIR / "contracts" / "artifacts" / "contracts" / "CCIPContract.sol" / "CCIPContract.json"
+        CONTRACT_FILE = SCRIPT_DIR / "contracts" / "artifacts" / "contracts" / "CCIPContract" / "CCIPContract.json"
         self.contract_compiled_file = str(CONTRACT_FILE)
         self.ccip_directory_path = str(DATA_FILE)
         print("setting up ccip client...")
